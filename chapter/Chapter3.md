@@ -21,12 +21,14 @@ Git repository. Git then creates a commit object that has the metadata and a poi
 
 Your Git repository now contains five objects: one blob for the contents of each of your three files, one tree that lists the contents of the directory and specifies which file names are stored as which blobs, and one commit with the pointer to that root tree and all the commit metadata. Conceptually, the data in your Git repository looks something like Figure 3.1.
 ![](../media/d1cc6002-cf8b-4a11-a4cb-3852034af041.png)
+
 Figure 3.1: Single commit repository data
 
 If you make some changes and commit again, the next commit stores a pointer to the commit that came im../mediately before it. After two more commits, your history might look something like Figure 3.2.
 
 
 ![](../media/09209caa-04f1-414f-ace0-d38ecb3254cb.png)
+
 Figure 3.2: Git object data for multiple commits
 
 A branch in Git is simply a lightweight movable pointer to one of these commits.The default branch name in Git is master. As you initially make commits, you’re given a master branch that points to the last commit you made. Every time you commit, it moves forward automatically. 
@@ -36,14 +38,17 @@ What happens if you create a new branch? Well, doing so creates a new pointer fo
 $ git branch testing
 ```
 ![](../media/efd36dd6-781d-4a2e-80a3-a8d93c1487d0.png)
+
 Figure 3.3: Branch pointing into the commit data's history
 ![](../media/c30f929b-d41e-44ff-83af-7b2747f7de7f.png)
+
 Figure 3.4: Multiple branches pointing into the commit's data history
 
 This creates a new pointer at the same commit you’re currently on (see Figure 3.4).
 
 How does Git know what branch you're currently on? It keeps a special pointer called HEAD. Note that this is a lot different than the concept of HEAD in other VCSs you may be used to, such as Subversion or CVS. In Git, this is a pointer to the local branch you’re currently on. In this case, you’re still on master. The git branch command only created a new branch — it didn't switch to that branch (see Figure 3.5).
 ![](../media/74d019d8-d2fc-4e64-aa77-67c09ac9e3b5.png)
+
 Figure 3.5: HEAD file pointing to the branch you're on
 
 To switch to an existing branch, you run the git checkout command. Let's switch to the new testing branch:
@@ -52,6 +57,7 @@ $ git checkout testing
 ```
 This moves HEAD to point to the testing branch (see Figure 3.6).
 ![](../media/bc6ba1cd-8e6d-4f19-80a4-4bac32ee2ca7.png)
+
 Figure 3.6: HEAD points to another branch when you switch branches.
 
 What is the significance of that? Well, let's do another commit:
@@ -67,6 +73,7 @@ This is interesting, because now your testing branch has moved forward, but your
 $ git checkout master
 ```
 ![](../media/e6951975-a8cc-4817-9d02-7f41728c896a.png)
+
 Figure 3.8: HEAD moves to another branch on a checkout.
 
 Figure 3.8 shows the result. That command did two things. It moved the HEAD pointer back to point to the master branch, and it reverted the files in your working directory back to the snapshot that master points to. This also means the changes you make from this point forward will diverge from an older version of the project. It essentially rewinds the work you’ve done in your testing branch temporarily so you can go in a different direction. 
@@ -79,6 +86,7 @@ $ git commit -a -m 'made other changes'
 Now your project history has diverged (see Figure 3.9). You created and switched to a branch, did some work on it, and then switched back to your main branch and did other work. Both of those changes are isolated in separate branches: you can switch back and forth between the branches and merge them together when you’re ready. And you did all that with simple branch and checkout commands.
 
 ![](../media/1dced72f-c906-4154-a564-fb0ca6d3116b.png)
+
 Figure 3.9: The branch histories have diverged.
 
 Because a branch in Git is in actuality a simple file that contains the 40 character SHA–1 checksum of the commit it points to, branches are cheap to create and destroy. Creating a new branch is as quick and simple as writing 41 bytes to a file (40 characters
@@ -107,6 +115,7 @@ At this stage, you'll receive a call that another issue is critical and you need
 First, let's say you're working on your project and have a couple of commits already (see Figure 3.10).
 
 ![](../media/5e007a61-da85-4a55-a7c8-074c3d32f081.png)
+
 Figure 3.10: A short and simple commit history
 
 You've decided that you're going to work on issue #53 in whatever issue-tracking system your company uses. To be clear, Git isn’t tied into any particular issue-tracking system; but because issue #53 is a focused topic that you want to work on, you’ll create a new branch in which to work. To create a branch and switch to it at the same time, you can run the ```git checkout``` command with the ```-b``` switch:
@@ -120,6 +129,7 @@ $ git branch iss53
 $ git checkout iss53
 ```
 ![](../media/18ecf44a-b5e5-400f-b8ba-d0605dcbdfb4.png)
+
 Figure 3.11: Creating a new branch pointer
 
 You work on your web site and do some commits. Doing so moves the ```iss53``` branch forward, because you have it checked out (that is, your HEAD is pointing to it; see Figure 3.12):
@@ -129,6 +139,7 @@ $ git commit -a -m 'added a new footer [issue 53]'
 ```
 
 ![](../media/15b3bb53-c1e9-4865-8d61-8e524a14a13d.png)
+
 Figure 3.12: The iss53 branch has moved forward with your work.
 
 Now you get the call that there is an issue with the web site, and you need to fix it im../mediately. im../mediately. With Git, you don’t have to deploy your fix along with the ```iss53``` changes you've made, and you don't have to put a lot of effort into reverting those changes before you can work on applying your fix to what is in production. All you have to do is switch back to your master branch. 
@@ -152,6 +163,7 @@ $ git commit -a -m ’fixed the broken email address’
   1 files changed, 0 insertions(+), 1 deletions(-)
 ```
 ![](../media/518b21e1-52b0-44ea-b8d5-2053b5dc082b.png)
+
 Figure 3.13: hotfix branch based back at your master branch point
 
 You can run your tests, make sure the ```hotfix``` is what you want, and merge it back into your master branch to deploy to production. You do this with the git merge command:
@@ -172,6 +184,7 @@ Your change is now in the snapshot of the commit pointed to by the ```master``` 
 After that your super-important fix is deployed, you're ready to switch back to the work you were doing before you were interrupted. However, first you'll delete the
 
 ![](../media/69ae84d1-d27c-49bf-8e56-0454d0a9aec4.png)
+
 Figure 3.14: Your master branch points to the same place as your ```hotfix``` branch after the merge.
 
 ```hotfix``` branch, because you no longer need it — the master branch points at the same place. You can delete it with the ```-d``` option to ```git branch```:
@@ -193,6 +206,7 @@ $ git commit -a -m ’finished the new footer [issue 53]’
 ```
 
 ![](../media/c1b99d5d-81d8-4156-a701-6dc2233284ba.png)
+
 Figure 3.15: Your ```iss53``` branch can move forward independently.
 
 It's worth noting here that the work you did in your ```hotfix``` branch is not contained in the files in your ```iss53``` branch. If you need to pull it in, you can merge your master branch into your iss53 branch by running ```git merge master```, or you can wait to integrate those changes until you decide to pull the ```iss53``` branch back into master later.
@@ -209,11 +223,13 @@ Merge made by recursive.
 This looks a bit different than the ```hotfix``` merge you did earlier. In this case, your development history has diverged from some older point. Because the commit on the branch you're on isn't a direct ancestor of the branch you're merging in, Git has to do some work. In this case, Git does a simple three-way merge, using the two snapshots pointed to by the branch tips and the common ancestor of the two. Figure 3.16 highlights the three snapshots that Git uses to do its merge in this case.
 
 ![](../media/f1bff911-a5e2-4f0a-ab5b-ff9983fd089e.png)
+
 Figure 3.16: Git automatically identifies the best common-ancestor merge base for branch merging.
 
 Instead of just moving the branch pointer forward, Git creates a new snapshot that results from this three-way merge and automatically creates a new commit that points to it (see Figure 3.17). This is referred to as a merge commit and is special in that it has more than one parent. It's worth pointing out that Git determines the best common ancestor to use for its merge base; this is different than CVS or Subversion (before version 1.5), where the developer doing the merge has to figure out the best merge base for themselves. This makes merging a heck of a lot easier in Git than in these other systems. Now that your work is merged in, you have no further need for the iss53 branch. You can delete it and then manually close the ticket in your ticket-tracking system:
 
 ![](../media/22f2038d-e740-47ed-82a6-b0734ab4b8f5.png)
+
 Figure 3.17: Git automatically creates a new commit object that contains the merged work.
 ```
 $ git branch -d iss53
@@ -349,6 +365,7 @@ Many Git developers have a workﬂow that embraces this approach, such as having
 In reality, we're talking about pointers moving up the line of commits you're making. The stable branches are farther down the line in your commit history, and the bleeding-edge branches are farther up the history (see Figure 3.18).
 
 ![](../media/5c370125-b2fa-4b69-9a72-8fd9b5222bfe.png)
+
 Figure 3.18: More stable branches are generally farther down the commit history.
 
 It’s generally easier to think about them as work silos, where sets of commits graduate to a more stable silo when they're fully tested (see Figure 3.19).
@@ -356,6 +373,7 @@ It’s generally easier to think about them as work silos, where sets of commits
 You can keep doing this for several levels of stability. Some larger projects also havea ```proposed``` or ```pu```  (proposed updates) branch that has integrated branches that may not be ready to go into the ```next``` or ```master``` branch. The idea is that your branches are at various levels of stability; when they reach a more stable level, they're merged into the branch above them. Again, having multiple long-running branches isn't necessary, but it's often helpful, especially when you're dealing with very large or complex projects.
 
 ![](../media/5cb3893a-57f5-40fb-8248-c182c401e30b.png)
+
 Figure 3.19: It may be helpful to think of your branches as silos.
 
 ### Topic Branches
@@ -371,8 +389,10 @@ Now, let’s say you decide you like the second solution to your issue best (```
 It's important to remember when you're doing all this that these branches are completely local. When you're branching and merging, everything is being done only in your Git repository — no server communication is happening.
 
 ![](../media/5d14b105-0663-42b1-9f3a-6049af723194.png)
+
 Figure 3.20: Your commit history with multiple topic branches
 ![](../media/4d475801-d01e-4b60-88ec-0d8fd676c7e8.png)
+
 Figure 3.21: Your history after merging in ```dumbidea``` and ```iss91v2```
 
 Remote Branches
@@ -393,17 +413,21 @@ To synchronize your work, you run a ```git fetch origin``` command. This command
 To demonstrate having multiple remote servers and what remote branches for those remote projects look like, let’s assume you have another internal Git server that is used only for development by one of your sprint teams. This server is at ```git.team1.ourcompany.com```. You can add it as a new remote reference to the project you’re currently working on by running the ```git remote add``` command as we covered in Chapter 2. Name this remote ```teamone```, which will be your shortname for that whole URL (see Figure 3.25).
 
 ![](../media/4e96c573-f8b9-409e-a291-082e06698a6f.png)
+
 Figure 3.23: Working locally and having someone push to your remote server makes each history move forward differently.
 
 ![](../media/1e6086f3-35f4-415b-bd9e-2a1171f32c71.png)
+
 Figure 3.24: The git fetch command updates your remote references.
 
 Now, you can run ```git fetch teamone``` to fetch everything server has that you don't have yet. Because that server is a subset of the data your ```origin``` server has right now, Git fetches no data but sets a remote branch called ```teamone/master``` to point to the commit that ```teamone``` has as its ```master``` branch (see Figure 3.26).
 
 ![](../media/b3fc04f7-6051-4e99-8651-85d31e3bca64.png)
+
 Figure 3.25: Adding another server as a remote
 
 ![](../media/13774552-393d-48dc-8118-ce9eb7243755.png)
+
 Figure 3.26: You get a reference to teamone's master branch position locally.
 
 ### Pushing 
