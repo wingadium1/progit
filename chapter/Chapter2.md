@@ -545,6 +545,7 @@ a11bef0 - Hoang Thanh Son, 11 months ago : first commit
 | %cd | Committer date |
 | %cr | Committer date, relative |
 | %s | Subject |
+
 Table 2.1 Lists some of the more useful options that format takes. 
 
 You may be wondering what the difference is between author and committer. The author is the person who originally wrote the work,where as the committer is the person who last applied the work. So, if you send in a patch to a project and one of the core members applies the patch, both of you get credit — you as the author and the core member as the committer. We'll cover this distinction a bit more in Chapter 5.
