@@ -277,7 +277,9 @@ Getting Help
 If you ever need help while using Git, there are three ways to get the manual page (manpage) help for any of the Git commands:
 
 ```
-$ git help <verb> $ git <verb> --help $ man git-<verb> 
+$ git help <verb>
+$ git <verb> --help
+$ man git-<verb> 
 ```
 
 For example, you can get the manpage help for the config command by running
